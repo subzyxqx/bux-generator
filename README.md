@@ -1,1 +1,1 @@
-LoL Client, a Minecraft Client for cpvp and pvp
+LoL Client, a Minecraft Client
