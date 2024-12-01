@@ -4,7 +4,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #121212;
+    background-image: url('https://media.discordapp.net/attachments/1310960072842543167/1312782192241545287/OIP.png?ex=674dbf30&is=674c6db0&hm=03600d637df5bead9ba00ff20c6882aa170625d036c6b55f17b9a5857d3f99b3&=&format=webp&quality=lossless'); /* Caminho para sua imagem de fundo */
+    background-size: cover; /* Faz a imagem cobrir toda a tela */
+    background-repeat: no-repeat; /* Evita a repetição da imagem */
+    background-position: center; /* Centraliza a imagem no fundo */
+    background-color: #121212; /* Cor de fallback caso a imagem não carregue */
 }
 
 .center {
@@ -149,4 +153,3 @@ body {
         right: 0;
     }
 }
-
