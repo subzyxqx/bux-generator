@@ -1,0 +1,255 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>link checker</title>
+    <style>
+  
+        body {
+    background-image: url('https://cdn.discordapp.com/attachments/1278532000885768256/1280232886569795715/Screenshot_20240823-1210362.png?ex=66e878c9&is=66e72749&hm=535504d4a6069fe695aabdec0752a0356b81ec2b01ba854e0942584e54e88871&');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+}
+  
+#container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+}
+
+h2 {
+    margin-top: 0;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    color: #303030;
+    font-size: 2em;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #1b1a1a;
+    resize: none;
+    margin-bottom: 10px;
+    background: rgba(36, 36, 36, 0.8);
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #171817;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #141614;
+}
+
+#results {
+    margin-top: 20px;
+}
+
+.result-item {
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgba(27, 25, 25, 0.8);
+    border: 1px solid #202020;
+    text-align: left;
+}
+
+.result-item.valid {
+    color: green;
+}
+
+.result-item.invalid {
+    color: red;
+}
+
+.result-item.error {
+    color: orange;
+}
+
+
+#summary {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+#loading {
+    display: none;
+    margin-top: 10px;
+}
+
+#downloadBtn {
+    display: none;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+#downloadBtn:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <h2>Link checker</h2>
+    <form id="linkForm">
+        <textarea id="linksInput" placeholder="Insira os links de promoção do Discord aqui, um por linha..."></textarea>
+        <button type="submit">Verificar Links</button>
+    </form>
+    <div id="loading">Verificando links, por favor aguarde...</div>
+    <div id="results"></div>
+    <div id="summary"></div>
+    <button id="downloadBtn" onclick="downloadValidLinks()">Baixar Links Válidos</button>
+</div>
+
+<script>
+    const DISCORD_TOKEN = 'MTE5ODE5OTk7MzM2ODU3ODE0OA.G2-_CW.-xfTpWGx-ujcpK83P4Q2AYD2-XAKsc5QNo5DHo';
+    let validLinks = [];
+
+    async function checkLink(link) {
+        const apiUrl = `https://discord.com/api/v9/entitlements/gift-codes/${link.split('/').pop()}?with_application=false&with_subscription_plan=true`;
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${DISCORD_TOKEN}`
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (!data.redeemed && data.uses === 0) {
+                    const now = new Date();
+                    const expiresAt = new Date(data.expires_at);
+                    let validity = '';
+                    if (expiresAt > now) {
+                        validity = 'válido, expira em ' + expiresAt.toLocaleString();
+                    } else {
+                        validity = 'válido, mas expirou em ' + expiresAt.toLocaleString();
+                    }
+
+                    // Verificando se o link é mensal ou trimestral
+                    const planLength = data.subscription_plan.length;
+                    if (planLength === 1) {
+                        validity += ', plano mensal';
+                    } else if (planLength === 3) {
+                        validity += ', plano trimestral';
+                    }
+
+                    return validity;
+                } else {
+                    return 'inválido';
+                }
+            } else {
+                return 'inválido';
+            }
+        } catch (error) {
+            console.error('Erro ao verificar o link:', error);
+            return 'erro na verificação';
+        }
+    }
+
+    document.getElementById('linkForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const linksInput = document.getElementById('linksInput');
+        const results = document.getElementById('results');
+        const summary = document.getElementById('summary');
+        const loading = document.getElementById('loading');
+        const downloadBtn = document.getElementById('downloadBtn');
+        results.innerHTML = '';
+        summary.innerHTML = '';
+        validLinks = [];
+
+        const links = linksInput.value.match(/https:\/\/(?:discord\.com\/billing\/promotions|promos\.discord\.gg)\/[^\s]+/g) || [];
+        if (links.length === 0) {
+            results.innerHTML = '<p>Nenhum link de promoção do Discord encontrado.</p>';
+            return;
+        }
+
+        loading.style.display = 'block';
+        let validCount = 0;
+        let invalidCount = 0;
+        let errorCount = 0;
+
+    
+
+for (const link of links) {
+    const status = await checkLink(link);
+    let statusClass = '';
+    if (status.startsWith('válido')) {
+        validCount++;
+        validLinks.push(link);
+        statusClass = 'valid';
+    } else if (status === 'inválido') {
+        invalidCount++;
+        statusClass = 'invalid';
+    } else {
+        errorCount++;
+        statusClass = 'error';
+    }
+    const item = document.createElement('div');
+    item.classList.add('result-item', statusClass);
+    item.textContent = `${link} - ${status}`;
+    results.appendChild(item);
+}
+
+/* ...o resto do seu código JavaScript aqui... */
+
+
+        loading.style.display = 'none';
+        summary.innerHTML = `Total de links válidos: ${validCount}<br>Total de links inválidos: ${invalidCount}<br>Total de erros na verificação: ${errorCount}`;
+
+        if (validLinks.length > 0) {
+            downloadBtn.style.display = 'block';
+        } else {
+            downloadBtn.style.display = 'none';
+        }
+    });
+
+    function downloadValidLinks() {
+        const blob = new Blob([validLinks.join('\n')], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'validos.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+</script>
+
+
+
+
+
+
+</body></html>
