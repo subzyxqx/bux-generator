@@ -8,7 +8,7 @@ body {
     background-size: cover; /* Faz a imagem cobrir toda a tela */
     background-repeat: no-repeat; /* Evita a repetição da imagem */
     background-position: center; /* Centraliza a imagem no fundo */
-    background-color: #121212; /* Cor de fallback caso a imagem não carregue */
+    background-color: #ffffff; /* Cor de fallback caso a imagem não carregue */
 }
 
 .center {
