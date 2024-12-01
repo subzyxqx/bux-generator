@@ -4,10 +4,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('https://media.discordapp.net/attachments/1310960072842543167/1312786056780972042/OIP.png?ex=674dc2ca&is=674c714a&hm=b959e0ce02fe9530b46d6460307b162323a89ec52aac49f8a95ee927b054b81d&=&format=webp&quality=lossless'); 
-    background-repeat: no-repeat; /* Evita a repetição da imagem */
-    background-position: center; /* Centraliza a imagem no fundo */
-    background-color: #ffffff; /* Cor de fallback caso a imagem não carregue */
+    background-color: #121212;
 }
 
 .center {
@@ -152,3 +149,4 @@ body {
         right: 0;
     }
 }
+
