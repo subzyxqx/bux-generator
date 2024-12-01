@@ -9,7 +9,7 @@ body {
 
 .center {
     display: flex; /* Define o layout flexível */
-    gap: 11px; /* Espaçamento entre os botões */
+    gap: 14px; /* Espaçamento entre os botões */
     justify-content: center; /* Centraliza os botões horizontalmente */
     align-items: center; /* Alinha os botões verticalmente */
     text-align: center;
