@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A VENDA DESSE ACESSO NÃO E AUTORIZADA</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #f0f0f0;
+            opacity: 0;
+            animation: fadeIn 1s forwards 0.5s;
+        }
+        .input-box {
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1s;
+        }
+        .input-box input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #2b2b2b;
+            color: #ffffff;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .input-box input:focus {
+            border-color: #4CAF50;
+        }
+        .output-box {
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1.5s;
+        }
+        .output-box textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #2b2b2b;
+            color: #ffffff;
+            resize: none;
+            outline: none;
+        }
+        .btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 1s forwards 2s;
+        }
+        .btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <h1>Quantos códigos você gostaria de gerar?
+        </h1>
+        <div class="input-box fade-in">
+            <input type="number" id="numCodes" min="1" placeholder="Digite um número">
+        </div>
+        <div class="output-box fade-in">
+            <textarea id="result" placeholder="Os códigos gerados aparecerão aqui..." readonly=""></textarea>
+        </div>
+        <button class="btn fade-in" onclick="generateCodes()">Gerar Códigos</button>
+        <button class="btn fade-in" onclick="copyToClipboard()">Copiar</button>
+        <button class="btn fade-in" onclick="downloadTxtFile()">Baixar Arquivo .txt</button>
+    </div>
+
+    <script>
+        function generateRandomString(length) {
+            const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                code += characters[randomIndex];
+            }
+            return code;
+        }
+
+        function generateCodes() {
+            const numCodes = parseInt(document.getElementById('numCodes').value);
+            const output = document.getElementById('result');
+
+            if (isNaN(numCodes) || numCodes <= 0) {
+                alert('Por favor, insira um número válido.');
+                return;
+            }
+
+            const codes = [];
+            for (let i = 0; i < numCodes; i++) {
+                const code = generateRandomString(10);
+                const url = `https://www.spotify.com/br-pt/ppt/microsoft/?code=${code}`;
+                codes.push(url);
+            }
+
+            output.value = codes.join('\n');
+        }
+
+        function copyToClipboard() {
+            const copyText = document.getElementById('result');
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                alert("Códigos copiados para a área de transferência!");
+            }).catch(err => {
+                alert("Erro ao copiar os códigos: ", err);
+            });
+        }
+
+        function downloadTxtFile() {
+            const textToSave = document.getElementById("result").value;
+            const hiddenElement = document.createElement("a");
+            hiddenElement.href = "data:text/plain;charset=utf-8," + encodeURIComponent(textToSave);
+            hiddenElement.target = "_blank";
+            hiddenElement.download = "links_spotify.txt"; 
+            hiddenElement.click();
+        }
+    </script>
+  </body>
+</html>
