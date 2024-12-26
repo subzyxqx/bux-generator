@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Store Gerador Trimensal</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             margin: 0;
@@ -15,7 +14,7 @@
             background-image: url('https://cdn.discordapp.com/attachments/1278532000885768256/1280232886569795715/Screenshot_20240823-1210362.png?ex=66e878c9&is=66e72749&hm=535504d4a6069fe695aabdec0752a0356b81ec2b01ba854e0942584e54e88871&');
             color: #ffffff;
             font-family: 'Roboto', sans-serif;
-            overflow: hidden; /* Para evitar a barra de rolagem durante a animação */
+            overflow: hidden;
         }
         .container {
             text-align: center;
@@ -23,19 +22,16 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-            opacity: 0;
             animation: fadeIn 1s forwards;
         }
         h1 {
             font-size: 24px;
             margin-bottom: 20px;
             color: #f0f0f0;
-            opacity: 0;
             animation: fadeIn 1s forwards 0.5s;
         }
         .input-box {
             margin-top: 20px;
-            opacity: 0;
             animation: fadeIn 1s forwards 1s;
         }
         .input-box input {
@@ -46,14 +42,12 @@
             background-color: #2b2b2b;
             color: #ffffff;
             outline: none;
-            transition: border-color 0.3s ease;
         }
         .input-box input:focus {
             border-color: #4CAF50;
         }
         .output-box {
             margin-top: 20px;
-            opacity: 0;
             animation: fadeIn 1s forwards 1.5s;
         }
         .output-box textarea {
@@ -78,7 +72,6 @@
             color: white;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
-            opacity: 0;
             animation: fadeIn 1s forwards 2s;
         }
         .btn:hover {
@@ -87,9 +80,6 @@
         }
         .btn:active {
             transform: translateY(0);
-        }
-        .download-btn {
-            margin-top: 20px;
         }
         @keyframes fadeIn {
             to {
@@ -109,69 +99,33 @@
         </div>
         <button class="btn fade-in" onclick="generateCodes()">Gerar Códigos</button>
         <button class="btn fade-in" onclick="copyToClipboard()">Copiar</button>
-        <button class="btn download-btn fade-in" onclick="downloadTxtFile()">Baixar Arquivo .txt</button>
+        <button class="btn fade-in" onclick="downloadTxtFile()">Baixar Arquivo .txt</button>
     </div>
 
     <script>
-        // Função para gerar códigos
-        async function generateCodes() {
-            const quantity = document.getElementById('quantity').value;
-            const output = document.getElementById('codes');
-            const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            const tamanho = 5;
-            let codigos = [];
+        // Função para gerar códigos no formato XXXXX-XXXXX-XXXXX
+        function generateCodes() {
+            const quantity = document.getElementById('quantity').value; // Quantidade de códigos
+            const output = document.getElementById('codes'); // Campo de saída
+            const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Caracteres permitidos
+            const tamanhoSegmento = 5; // Tamanho de cada segmento
+            const segmentos = 3; // Quantidade de segmentos por código
+            let codigos = []; // Array para armazenar os códigos gerados
 
             for (let i = 0; i < quantity; i++) {
-                let codigo1 = '';
-                for (let j = 0; j < tamanho; j++) {
-                    const indice = Math.floor(Math.random() * caracteres.length);
-                    codigo += caracteres.charAt(indice);
+                let codigo = [];
+                for (let s = 0; s < segmentos; s++) {
+                    let segmento = '';
+                    for (let j = 0; j < tamanhoSegmento; j++) {
+                        const indice = Math.floor(Math.random() * caracteres.length);
+                        segmento += caracteres.charAt(indice);
+                    }
+                    codigo.push(segmento);
                 }
-                codigos.push(`${codigo1}-${codigo2}-${codigo3}`);
+                codigos.push(codigo.join('-')); // Junta os segmentos com hífen
             }
 
-            output.value = codigos.join('\n');
-        }
-
-            <script>
-        // Função para gerar códigos
-        async function generateCodes() {
-            const quantity = document.getElementById('quantity').value;
-            const output = document.getElementById('codes');
-            const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            const tamanho = 5;
-            let codigos = [];
-
-            for (let i = 0; i < quantity; i++) {
-                let codigo2 = '';
-                for (let j = 0; j < tamanho; j++) {
-                    const indice = Math.floor(Math.random() * caracteres.length);
-                    codigo += caracteres.charAt(indice);
-                }
-                codigos.push(`${codigo1}-${codigo2}-${codigo3}`);
-            }
-
-            output.value = codigos.join('\n');
-        }
-    <script>
-        // Função para gerar códigos
-        async function generateCodes() {
-            const quantity = document.getElementById('quantity').value;
-            const output = document.getElementById('codes');
-            const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            const tamanho = 5;
-            let codigos = [];
-
-            for (let i = 0; i < quantity; i++) {
-                let codigo3 = '';
-                for (let j = 0; j < tamanho; j++) {
-                    const indice = Math.floor(Math.random() * caracteres.length);
-                    codigo += caracteres.charAt(indice);
-                }
-                codigos.push(`${codigo1}-${codigo2}-${codigo3}`);
-            }
-
-            output.value = codigos.join('\n');
+            output.value = codigos.join('\n'); // Exibe os códigos no textarea
         }
 
         // Função para copiar os códigos para a área de transferência
