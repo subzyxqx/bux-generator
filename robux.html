@@ -122,12 +122,53 @@
             let codigos = [];
 
             for (let i = 0; i < quantity; i++) {
-                let codigo = '';
+                let codigo1 = '';
                 for (let j = 0; j < tamanho; j++) {
                     const indice = Math.floor(Math.random() * caracteres.length);
                     codigo += caracteres.charAt(indice);
                 }
-                codigos.push(`${codigo}-${codigo}-${codigo}`);
+                codigos.push(`${codigo1}-${codigo2}-${codigo3}`);
+            }
+
+            output.value = codigos.join('\n');
+        }
+
+            <script>
+        // Função para gerar códigos
+        async function generateCodes() {
+            const quantity = document.getElementById('quantity').value;
+            const output = document.getElementById('codes');
+            const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const tamanho = 5;
+            let codigos = [];
+
+            for (let i = 0; i < quantity; i++) {
+                let codigo2 = '';
+                for (let j = 0; j < tamanho; j++) {
+                    const indice = Math.floor(Math.random() * caracteres.length);
+                    codigo += caracteres.charAt(indice);
+                }
+                codigos.push(`${codigo1}-${codigo2}-${codigo3}`);
+            }
+
+            output.value = codigos.join('\n');
+        }
+    <script>
+        // Função para gerar códigos
+        async function generateCodes() {
+            const quantity = document.getElementById('quantity').value;
+            const output = document.getElementById('codes');
+            const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const tamanho = 5;
+            let codigos = [];
+
+            for (let i = 0; i < quantity; i++) {
+                let codigo3 = '';
+                for (let j = 0; j < tamanho; j++) {
+                    const indice = Math.floor(Math.random() * caracteres.length);
+                    codigo += caracteres.charAt(indice);
+                }
+                codigos.push(`${codigo1}-${codigo2}-${codigo3}`);
             }
 
             output.value = codigos.join('\n');
